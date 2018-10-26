@@ -65,7 +65,7 @@ public class DataValidator {
 	public ResultSet getDBResultsBOPIS(String Environment, String ItemID,String BannerValue) throws SQLException, IOException {
 
 		Statement stmt = con.createStatement();				
-		String Query = "select is_Pickup_Allowed,IS_SHIPPING_ALLOWED,EXTN_STORE_SHIP_ALLOWED,EXTN_IS_DSV_ENABLED from OMS" + Environment + ".yfs_Item where item_id='" + 
+		String Query = "select is_Pickup_Allowed,IS_SHIPPING_ALLOWED,EXTN_STORE_SHIP_ALLOWED,EXTN_IS_DSV_ENABLED,Status from OMS" + Environment + ".yfs_Item where item_id='" + 
 		ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"'";
 		ResultSet rs = stmt.executeQuery(Query);
 

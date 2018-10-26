@@ -4,10 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class TableData {
 	
-	private SimpleStringProperty OMSData,DCStore,BOPIS,WEBDATA,OnHandDATA,DCAvailable,StoreAvailable,VendorAvailable;
+	private SimpleStringProperty OMSData,DCStore,BOPIS,WEBDATA,OnHandDATA,DCAvailable,StoreAvailable,
+	VendorAvailable,AttributeSize,AttributeColor,AttributeModel,AttributeStatus;
 
 	public TableData(String OMSData, String DCStore, String BOPIS,
-			String WEBDATA, String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable) {
+			String WEBDATA, String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable, String AttributeSize,String AttributeColor,String AttributeModel,String AttributeStatus) {
 		this.OMSData = new SimpleStringProperty(OMSData);
 		this.DCStore = new SimpleStringProperty(DCStore);
 		this.BOPIS = new SimpleStringProperty(BOPIS);
@@ -16,6 +17,42 @@ public class TableData {
 		this.DCAvailable = new SimpleStringProperty(DCAvailable);
 		this.StoreAvailable = new SimpleStringProperty(StoreAvailable);
 		this.VendorAvailable = new SimpleStringProperty(VendorAvailable);
+		this.AttributeSize = new SimpleStringProperty(AttributeSize);
+		this.AttributeColor = new SimpleStringProperty(AttributeColor);
+		this.AttributeModel = new SimpleStringProperty(AttributeModel);
+		this.AttributeStatus = new SimpleStringProperty(AttributeStatus);
+	}
+
+	public String getAttributeSize() {
+		return AttributeSize.get();
+	}
+
+	public void setAttributeSize(SimpleStringProperty attributeSize) {
+		AttributeSize = attributeSize;
+	}
+
+	public String getAttributeColor() {
+		return AttributeColor.get();
+	}
+
+	public void setAttributeColor(SimpleStringProperty attributeColor) {
+		AttributeColor = attributeColor;
+	}
+
+	public String getAttributeModel() {
+		return AttributeModel.get();
+	}
+
+	public void setAttributeModel(SimpleStringProperty attributeModel) {
+		AttributeModel = attributeModel;
+	}
+
+	public String getAttributeStatus() {
+		return AttributeStatus.get();
+	}
+
+	public void setAttributeStatus(SimpleStringProperty attributeStatus) {
+		AttributeStatus = attributeStatus;
 	}
 
 	public String getOMSData() {

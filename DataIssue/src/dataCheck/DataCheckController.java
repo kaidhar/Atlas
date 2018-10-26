@@ -1,13 +1,20 @@
 package dataCheck;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -19,6 +26,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -56,6 +65,21 @@ public class DataCheckController {
 	
     @FXML
     private ImageView LogoView;
+    
+    @FXML
+    private Label OMSDONE;
+
+    @FXML
+    private Label WEBDONE;
+    
+    @FXML
+    void openFAQURL(MouseEvent event) throws IOException, URISyntaxException {
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(new URI("https://hbcdigital.atlassian.net/wiki/spaces/SQA/pages/428146703/ATLAS"));
+        }
+
+    }
 	
 	
 
@@ -69,7 +93,9 @@ public class DataCheckController {
 		WebAdjust.clear();
 		ItemID.clear();
 		OMSAdjust.clear();
-		resultData.add(new TableData("", "", "", "", "", "", "", ""));
+		OMSDONE.setText("");
+		WEBDONE.setText("");
+		resultData.add(new TableData("", "", "", "", "", "", "", "","","","",""));
 		table.setItems(resultData);
 	}
 
@@ -87,18 +113,28 @@ public class DataCheckController {
 		StoreAvailable.setCellValueFactory(new PropertyValueFactory<TableData, String>("StoreAvailable"));
 		VendorAvailable.setCellValueFactory(new PropertyValueFactory<TableData, String>("VendorAvailable"));
 		
+		AttributeSize.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeSize"));
+		AttributeColor.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeColor"));
+		AttributeModel.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeModel"));
+		AttributeStatus.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeStatus"));
+
+		
 		String Path= ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
 		File file = new File(Path);
         Image image = new Image(file.toURI().toString());
         LogoView.setImage(image);
+        
+ 
+        
 
 	}
 
 	public ObservableList<TableData> getTableData(String OMSdata, String BOPIS, String DCStore, String WebData,
-			String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable) {
+			String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable,
+			String AttributeSize,String AttributeColor,String AttributeModel,String AttributeStatus) {
 		ObservableList<TableData> tableData = FXCollections.observableArrayList();
 		tableData.add(new TableData(OMSdata, BOPIS, DCStore, WebData, OnHandDATA, DCAvailable, StoreAvailable,
-				VendorAvailable));
+				VendorAvailable,AttributeSize,AttributeColor,AttributeModel,AttributeStatus));
 		return tableData;
 
 	}
@@ -135,7 +171,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V1.2");
+		stage.setTitle("Atlas V2.0");
 		stage.show();
 
 	}
@@ -148,7 +184,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V1.2");
+		stage.setTitle("Atlas V2.0");
 		stage.show();
 
 	}
@@ -161,7 +197,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V1.2");
+		stage.setTitle("Atlas V2.0");
 		stage.show();
 
 	}
@@ -175,7 +211,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V1.2");
+		stage.setTitle("Atlas V2.0");
 		stage.show();
     	
     }
@@ -215,6 +251,8 @@ public class DataCheckController {
 		IWS.UpdateInventory(ItemIDValue, Bannervalue, ShipNodeForInventoryValue, OMSAdjustValue, EnvironmentValue);
 		IWS.UpdateMonitor(ItemIDValue, Bannervalue, EnvironmentValue);
 
+		WEBDONE.setText("");
+		OMSDONE.setText("DONE!");
 		DBV.closeConnection();
 
 	}
@@ -255,7 +293,8 @@ public class DataCheckController {
 		String UPCValue = WebValue.get(0);
 		DBV.closeConnection();
 		DBV.getDBResultsWeb(EnvironmentValue, BannerValue, ItemIDValue, WebAdjustValue, UPCValue);
-
+		OMSDONE.setText("");
+		WEBDONE.setText("DONE!");
 	}
 
 	@FXML
@@ -284,6 +323,23 @@ public class DataCheckController {
 
 	@FXML
 	private TableColumn<TableData, String> OnHand;
+	
+
+    @FXML
+    private TableColumn<TableData, String> AttributeSize;
+
+    @FXML
+    private TableColumn<TableData, String> AttributeColor;
+
+    @FXML
+    private TableColumn<TableData, String> AttributeModel;
+
+    @FXML
+    private TableColumn<TableData, String> AttributeStatus;
+    
+    @FXML
+    private Hyperlink FAQ;
+
 
 	/*
 	 * Description: This method has been written to Check and Display the OMS and
@@ -302,6 +358,8 @@ public class DataCheckController {
 		String BannerValue = Banner.getSelectionModel().getSelectedItem();
 		System.out.println(ItemIDValue);
 		System.out.println(EnvironmentValue);
+		OMSDONE.setText("");
+		WEBDONE.setText("");
 		
 
 		if (BannerValue == "OFF") {
@@ -466,6 +524,7 @@ public class DataCheckController {
 		String DCAvailable = null;
 		String StoreAvailable = null;
 		String VendorAvailable = null;
+		String Status=null;
 		ObservableList<TableData> resultData = FXCollections.observableArrayList();
 
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -482,12 +541,29 @@ public class DataCheckController {
 			DCAvailable = resultsBOPIS.get(1);
 			StoreAvailable = resultsBOPIS.get(2);
 			VendorAvailable = resultsBOPIS.get(3);
+			Status=resultsBOPIS.get(4);
+			
+			String ItemIDResult = null;
+			String ModelResult = null;
+			String UPCResult = null;
+			String Color_Code=null;
+			String Size_Code=null;
+			HashMap<String, String> resultsColorSizeModel = new HashMap<String,String>();
+			
+			results = DBV.getDBItemInfoItemID(EnvironmentValue,ItemIDValue);
+			ItemIDResult = results.get(1);
+			ModelResult = results.get(2);
+			UPCResult = results.get(0);
+			
+			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
+			Color_Code = resultsColorSizeModel.get("Color");
+			Size_Code = resultsColorSizeModel.get("Size");
 
 			WH_Quantity = resultsBanner.get(1);
 			ON_Hand_Quantity = resultsBanner.get(0);
 
 			resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, DCAvailable,
-					StoreAvailable, VendorAvailable));
+					StoreAvailable, VendorAvailable,Size_Code,Color_Code,ModelResult,Status));
 
 			results.clear();
 
