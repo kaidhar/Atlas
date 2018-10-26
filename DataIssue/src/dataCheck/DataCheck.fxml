@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataCheck.DataCheckController">
+   <children>
+      <VBox prefHeight="427.0" prefWidth="640.0">
+        <children>
+          <MenuBar VBox.vgrow="NEVER">
+            <menus>
+              <Menu mnemonicParsing="false" text="File">
+                <items>
+                        <MenuItem fx:id="ItemPick" mnemonicParsing="false" onAction="#ItemPickView" text="Mongo Updater" />
+                        <MenuItem fx:id="ItemInfo" mnemonicParsing="false" onAction="#ItemInfoView" text="Item Info" />
+                        <MenuItem fx:id="setCredentials" mnemonicParsing="false" onAction="#CredentialsView" text="Set Credentials" />
+                        <MenuItem fx:id="orderDetails" mnemonicParsing="false" onAction="#getOrderDetailsView" text="Order Details" />
+                </items>
+              </Menu>
+                  <Menu disable="true" mnemonicParsing="false" text="Developed By: Kartikay Dhar" />
+            </menus>
+          </MenuBar>
+          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                  <SplitPane dividerPositions="0.6" layoutX="-219.0" layoutY="32.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane>
+                           <children>
+                              <ImageView fx:id="LogoView" fitHeight="114.0" fitWidth="167.0" layoutX="416.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <TextField fx:id="ItemID" layoutX="189.0" layoutY="21.0" prefHeight="27.0" prefWidth="192.0" promptText="Input Item ID here" />
+                              <ChoiceBox fx:id="Environment" layoutX="189.0" layoutY="63.0" prefHeight="28.0" prefWidth="77.0" />
+                              <ChoiceBox fx:id="Banner" layoutX="303.0" layoutY="63.0" prefHeight="28.0" prefWidth="77.0" />
+                              <Button fx:id="checkInventory" layoutX="189.0" layoutY="106.0" mnemonicParsing="false" onAction="#checkInventory" prefHeight="28.0" prefWidth="77.0" text="Check" />
+                              <Button fx:id="Reset" layoutX="303.0" layoutY="107.0" mnemonicParsing="false" onAction="#ResetAction" prefHeight="27.0" prefWidth="77.0" text="Reset" />
+                              <TextField fx:id="OMSAdjust" layoutX="116.0" layoutY="149.0" prefHeight="27.0" prefWidth="101.0" promptText="Value" />
+                              <TextField fx:id="ShipNodeForInventory" layoutX="227.0" layoutY="149.0" prefHeight="27.0" prefWidth="108.0" promptText="Ship Node" />
+                              <Button fx:id="adjustInventory" layoutX="182.0" layoutY="182.0" mnemonicParsing="false" onAction="#adjustInventory" text="Adjust OMS" />
+                              <TextField fx:id="WebAdjust" layoutX="413.0" layoutY="149.0" prefHeight="28.0" prefWidth="167.0" promptText="Value" />
+                              <Button fx:id="adjustWeb" layoutX="452.0" layoutY="182.0" mnemonicParsing="false" onAction="#adjustWeb" text="Adjust WEB" />
+                              <Label layoutX="36.0" layoutY="26.0" text="Item Id" />
+                              <Label layoutX="36.0" layoutY="69.0" text="Environment &amp; Banner" />
+                              <Label layoutX="36.0" layoutY="154.0" text="OMS" />
+                              <Label layoutX="359.0" layoutY="154.0" text="WEB" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane>
+                           <children>
+                              <TextArea layoutX="129.0" layoutY="-58.0" prefWidth="638.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="table" layoutX="47.0" layoutY="-86.0" onMouseClicked="#CopyMethod" prefHeight="154.0" prefWidth="638.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="OMSInventoryValue" minWidth="-1.0" prefWidth="-1.0" text="OMS" />
+                                  <TableColumn fx:id="DCSTORE" minWidth="-1.0" prefWidth="-1.0" text="DC/STORE" />
+                                    <TableColumn fx:id="BOPIS" maxWidth="3000.0" minWidth="-1.0" prefWidth="-1.0" text="BOPIS" />
+                                    <TableColumn fx:id="DCAvailable" maxWidth="3000.0" minWidth="-1.0" prefWidth="-1.0" text="DC" />
+                                    <TableColumn fx:id="StoreAvailable" maxWidth="3000.0" minWidth="-1.0" prefWidth="-1.0" text="STORE" />
+                                    <TableColumn fx:id="VendorAvailable" maxWidth="3500.0" minWidth="-1.0" prefWidth="-1.0" text="VENDOR" />
+                                    <TableColumn fx:id="WEB" minWidth="-Infinity" prefWidth="99.0" text="SELLABLE" />
+                                    <TableColumn fx:id="OnHand" minWidth="-1.0" prefWidth="-1.0" text="ONHAND" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+            </children>
+          </AnchorPane>
+        </children>
+      </VBox>
+   </children>
+</AnchorPane>
