@@ -18,7 +18,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage=primaryStage;
-		this.primaryStage.setTitle("Atlas V2.0");
+		this.primaryStage.setTitle("Atlas V2.1");
 		
 		showMainView();
 	}

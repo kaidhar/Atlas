@@ -62,26 +62,25 @@ public class DataCheckController {
 
 	@FXML
 	private ChoiceBox<String> Banner;
-	
-    @FXML
-    private ImageView LogoView;
-    
-    @FXML
-    private Label OMSDONE;
 
-    @FXML
-    private Label WEBDONE;
-    
-    @FXML
-    void openFAQURL(MouseEvent event) throws IOException, URISyntaxException {
+	@FXML
+	private ImageView LogoView;
 
-        if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(new URI("https://hbcdigital.atlassian.net/wiki/spaces/SQA/pages/428146703/ATLAS"));
-        }
+	@FXML
+	private Label OMSDONE;
 
-    }
-	
-	
+	@FXML
+	private Label WEBDONE;
+
+	@FXML
+	void openFAQURL(MouseEvent event) throws IOException, URISyntaxException {
+
+		if (Desktop.isDesktopSupported()) {
+			Desktop.getDesktop()
+					.browse(new URI("https://hbcdigital.atlassian.net/wiki/spaces/SQA/pages/428146703/ATLAS"));
+		}
+
+	}
 
 	@FXML
 	void ResetAction(ActionEvent event) {
@@ -95,7 +94,7 @@ public class DataCheckController {
 		OMSAdjust.clear();
 		OMSDONE.setText("");
 		WEBDONE.setText("");
-		resultData.add(new TableData("", "", "", "", "", "", "", "","","","",""));
+		resultData.add(new TableData("", "", "", "", "", "", "", "", "", "", "", ""));
 		table.setItems(resultData);
 	}
 
@@ -112,29 +111,25 @@ public class DataCheckController {
 		DCAvailable.setCellValueFactory(new PropertyValueFactory<TableData, String>("DCAvailable"));
 		StoreAvailable.setCellValueFactory(new PropertyValueFactory<TableData, String>("StoreAvailable"));
 		VendorAvailable.setCellValueFactory(new PropertyValueFactory<TableData, String>("VendorAvailable"));
-		
+
 		AttributeSize.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeSize"));
 		AttributeColor.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeColor"));
 		AttributeModel.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeModel"));
 		AttributeStatus.setCellValueFactory(new PropertyValueFactory<TableData, String>("AttributeStatus"));
 
-		
-		String Path= ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
+		String Path = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
 		File file = new File(Path);
-        Image image = new Image(file.toURI().toString());
-        LogoView.setImage(image);
-        
- 
-        
+		Image image = new Image(file.toURI().toString());
+		LogoView.setImage(image);
 
 	}
 
 	public ObservableList<TableData> getTableData(String OMSdata, String BOPIS, String DCStore, String WebData,
-			String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable,
-			String AttributeSize,String AttributeColor,String AttributeModel,String AttributeStatus) {
+			String OnHandDATA, String DCAvailable, String StoreAvailable, String VendorAvailable, String AttributeSize,
+			String AttributeColor, String AttributeModel, String AttributeStatus) {
 		ObservableList<TableData> tableData = FXCollections.observableArrayList();
 		tableData.add(new TableData(OMSdata, BOPIS, DCStore, WebData, OnHandDATA, DCAvailable, StoreAvailable,
-				VendorAvailable,AttributeSize,AttributeColor,AttributeModel,AttributeStatus));
+				VendorAvailable, AttributeSize, AttributeColor, AttributeModel, AttributeStatus));
 		return tableData;
 
 	}
@@ -153,16 +148,13 @@ public class DataCheckController {
 
 	@FXML
 	private MenuItem ItemInfo;
-	
+
 	@FXML
 	private MenuItem orderDetails;
-	
-    
-	
+
 	@FXML
-    private MenuItem setCredentials;
-	
-	
+	private MenuItem setCredentials;
+
 	@FXML
 	void ItemPickView(ActionEvent event) throws IOException {
 
@@ -171,7 +163,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.0");
+		stage.setTitle("Atlas V2.1");
 		stage.show();
 
 	}
@@ -184,7 +176,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.0");
+		stage.setTitle("Atlas V2.1");
 		stage.show();
 
 	}
@@ -197,24 +189,23 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.0");
+		stage.setTitle("Atlas V2.1");
 		stage.show();
 
 	}
-	
-	
-    @FXML
-    void getOrderDetailsView(ActionEvent event) throws IOException {
+
+	@FXML
+	void getOrderDetailsView(ActionEvent event) throws IOException {
 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderDetails.fxml"));
 		Parent root1 = (Parent) fxmlLoader.load();
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.0");
+		stage.setTitle("Atlas V2.1");
 		stage.show();
-    	
-    }
+
+	}
 
 	@FXML
 	private Button adjustWeb;
@@ -229,7 +220,8 @@ public class DataCheckController {
 	 */
 
 	@FXML
-	void adjustInventory(ActionEvent event) throws SQLException, ClassNotFoundException, IOException, KeyManagementException, NoSuchAlgorithmException {
+	void adjustInventory(ActionEvent event)
+			throws SQLException, ClassNotFoundException, IOException, KeyManagementException, NoSuchAlgorithmException {
 
 		String ItemIDValue = ItemID.getText();
 		String EnvironmentValue = Environment.getSelectionModel().getSelectedItem();
@@ -323,23 +315,21 @@ public class DataCheckController {
 
 	@FXML
 	private TableColumn<TableData, String> OnHand;
-	
 
-    @FXML
-    private TableColumn<TableData, String> AttributeSize;
+	@FXML
+	private TableColumn<TableData, String> AttributeSize;
 
-    @FXML
-    private TableColumn<TableData, String> AttributeColor;
+	@FXML
+	private TableColumn<TableData, String> AttributeColor;
 
-    @FXML
-    private TableColumn<TableData, String> AttributeModel;
+	@FXML
+	private TableColumn<TableData, String> AttributeModel;
 
-    @FXML
-    private TableColumn<TableData, String> AttributeStatus;
-    
-    @FXML
-    private Hyperlink FAQ;
+	@FXML
+	private TableColumn<TableData, String> AttributeStatus;
 
+	@FXML
+	private Hyperlink FAQ;
 
 	/*
 	 * Description: This method has been written to Check and Display the OMS and
@@ -360,23 +350,23 @@ public class DataCheckController {
 		System.out.println(EnvironmentValue);
 		OMSDONE.setText("");
 		WEBDONE.setText("");
-		
 
 		if (BannerValue == "OFF") {
 			BannerValue = "OFF5";
 
 		}
 
-
 		DataValidator DBV = new DataValidator();
 
 		DBV.openConnection(EnvironmentValue);
 
-		ResultSet rs = DBV.getDBResultsOMS(EnvironmentValue, ItemIDValue,BannerValue);
+		ResultSet rs = DBV.getDBResultsOMS(EnvironmentValue, ItemIDValue, BannerValue);
 
-		ResultSet rsBOPIS = DBV.getDBResultsBOPIS(EnvironmentValue, ItemIDValue,BannerValue);
+		ResultSet rsBOPIS = DBV.getDBResultsBOPIS(EnvironmentValue, ItemIDValue, BannerValue);
 
 		ResultSet rsWeb = DBV.getDBResultsWebValue(EnvironmentValue, ItemIDValue);
+
+		ResultSet rsDirty = DBV.getDBResultsDirtyNode(EnvironmentValue, ItemIDValue, BannerValue);
 
 		ResultSetMetaData rsmdWebValue = rsWeb.getMetaData();
 		int columnsNumberWebValue = rsmdWebValue.getColumnCount();
@@ -506,7 +496,7 @@ public class DataCheckController {
 
 		/*
 		 * 
-		 * Description: Method to Update Hercule's Table. Author: Kartikay Dhar Date:
+		 * Description: Method to Update Atlas's Table. Author: Kartikay Dhar Date:
 		 * 08/08/2018
 		 * 
 		 * 
@@ -524,7 +514,10 @@ public class DataCheckController {
 		String DCAvailable = null;
 		String StoreAvailable = null;
 		String VendorAvailable = null;
-		String Status=null;
+		String Status = null;
+		String Dirty = null;
+		List<String> resultsDirty = new ArrayList<String>();
+
 		ObservableList<TableData> resultData = FXCollections.observableArrayList();
 
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -536,38 +529,58 @@ public class DataCheckController {
 
 			}
 			OMSInv = results.get(0);
-			DCStore = results.get(1);
+			DCStore = results.get(1).trim();
 			BOPIS = resultsBOPIS.get(0);
 			DCAvailable = resultsBOPIS.get(1);
 			StoreAvailable = resultsBOPIS.get(2);
 			VendorAvailable = resultsBOPIS.get(3);
-			Status=resultsBOPIS.get(4);
-			
+			Status = resultsBOPIS.get(4);
+
+			while (rsDirty.next()) {
+
+				resultsDirty.add(rsDirty.getString(1).trim());
+
+			}
+
+			for (String node : resultsDirty)
+
+			{
+
+				if (DCStore.equals(node)) {
+
+					Dirty = "Y";
+
+				} else {
+					Dirty = "N";
+				}
+
+			}
+
+
 			String ItemIDResult = null;
 			String ModelResult = null;
 			String UPCResult = null;
-			String Color_Code=null;
-			String Size_Code=null;
-			HashMap<String, String> resultsColorSizeModel = new HashMap<String,String>();
-			
-			results = DBV.getDBItemInfoItemID(EnvironmentValue,ItemIDValue);
+			String Color_Code = null;
+			String Size_Code = null;
+			HashMap<String, String> resultsColorSizeModel = new HashMap<String, String>();
+
+			results = DBV.getDBItemInfoItemID(EnvironmentValue, ItemIDValue);
 			ItemIDResult = results.get(1);
 			ModelResult = results.get(2);
 			UPCResult = results.get(0);
-			
-			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
+
+			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue, ItemIDResult);
 			Color_Code = resultsColorSizeModel.get("Color");
 			Size_Code = resultsColorSizeModel.get("Size");
 
 			WH_Quantity = resultsBanner.get(1);
 			ON_Hand_Quantity = resultsBanner.get(0);
 
-			resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, DCAvailable,
-					StoreAvailable, VendorAvailable,Size_Code,Color_Code,ModelResult,Status));
+			resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, Dirty, StoreAvailable,
+					VendorAvailable, Size_Code, Color_Code, ModelResult, Status));
 
 			results.clear();
 
-			System.out.println("");
 		}
 		table.getSelectionModel().setCellSelectionEnabled(true);
 		table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);

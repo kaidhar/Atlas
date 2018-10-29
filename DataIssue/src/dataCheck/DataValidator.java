@@ -72,6 +72,18 @@ public class DataValidator {
 		return rs;
 
 	}
+	
+	
+	public ResultSet getDBResultsDirtyNode(String Environment, String ItemID,String BannerValue) throws SQLException, IOException {
+
+		Statement stmt = con.createStatement();				
+		String Query = "select node_key from OMS" + Environment + ".yfs_inventory_node_control where item_id='" + 
+		ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"'";
+		ResultSet rs = stmt.executeQuery(Query);
+
+		return rs;
+
+	}
 
 	String getProperty(String Prop) throws IOException {
 
