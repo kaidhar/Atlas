@@ -166,10 +166,8 @@ public class InventoryWebServices {
 
 		String finalrequest = requestTemplate2;
 
-		// String name = getCredentialProperty("UserCredentials");
-		// String password = getCredentialProperty("PWDCredentials");
-		String name = "H895458";
-		String password = "Rick2018";
+		String name = getCredentialProperty("UserCredentials");
+		String password = getCredentialProperty("PWDCredentials");
 		String authString = name + ":" + password;
 		byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
