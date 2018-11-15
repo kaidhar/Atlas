@@ -67,7 +67,7 @@ public class OrderDetailsController {
 
 		
 		String Path = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
-		System.out.println(Path);
+		//System.out.println(Path);
 		File file = new File(Path);
 		Image image = new Image(file.toURI().toString());
 		OrderLogo.setImage(image);

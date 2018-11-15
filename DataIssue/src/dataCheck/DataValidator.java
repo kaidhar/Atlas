@@ -53,7 +53,7 @@ public class DataValidator {
 		Statement stmt = con.createStatement();
 		String Query = "select Quantity,Shipnode_key from OMS" + Environment
 				+ ".yfs_inventory_supply where inventory_item_key in ((Select inventory_item_key from OMS" + Environment
-				+ ".YFS_INVENTORY_ITEM where item_id='" + ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"'))";
+				+ ".YFS_INVENTORY_ITEM where item_id='" + ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"')) and SUPPLY_TYPE='ONHAND'";
 		ResultSet rs = stmt.executeQuery(Query);
 
 		return rs;

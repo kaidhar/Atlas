@@ -207,18 +207,16 @@ public class InventoryWebServices {
 		List<Element> Values = classElement.getChildren();
 		List<Attribute> ValueNodes = classElement.getAttributes();
 
-		//HashMap<String, String> AttributesValues = new HashMap<String, String>();
-		
-		//Multimap<String, String> AttributesValues = ArrayListMultimap.create();
-		
+		// HashMap<String, String> AttributesValues = new HashMap<String, String>();
 
-		ListMultimap<String, String> AttributesValues = Multimaps.newListMultimap(
-				  new TreeMap<String, Collection<String>>(),
-				  new Supplier<List<String>>() {
-				    public List<String> get() {
-				      return Lists.newArrayList();
-				    }
-				  });
+		// Multimap<String, String> AttributesValues = ArrayListMultimap.create();
+
+		ListMultimap<String, String> AttributesValues = Multimaps
+				.newListMultimap(new TreeMap<String, Collection<String>>(), new Supplier<List<String>>() {
+					public List<String> get() {
+						return Lists.newArrayList();
+					}
+				});
 
 		for (int temp = 0; temp < Values.size(); temp++) {
 			Element Value = Values.get(temp);
@@ -226,54 +224,50 @@ public class InventoryWebServices {
 
 			List<Attribute> Attributes = Value.getAttributes();
 			List<Element> Child = Value.getChildren();
-			if(!Child.isEmpty())
-			{
-				
-				for(Element f: Child)
-				{
-				
+			if (!Child.isEmpty()) {
+
+				for (Element f : Child) {
+
 					List<Attribute> ChildAttributes = f.getAttributes();
 					List<Element> GrandChild = f.getChildren();
-					
-					if(!GrandChild.isEmpty())
-					{
-						
-						for(Element S: GrandChild)
-							
-						{
-						List<Attribute> GrandChildAttributes = S.getAttributes();
-						
 
-						for(Attribute A:GrandChildAttributes)
-						{
-							
+					if (!GrandChild.isEmpty()) {
 
-							if(A.getValue().isEmpty()) {continue;}
-							AttributesValues.put(A.getName(), A.getValue());
-							
-						}
-						
-						
+						for (Element S : GrandChild)
+
+						{
+							List<Attribute> GrandChildAttributes = S.getAttributes();
+
+							for (Attribute A : GrandChildAttributes) {
+
+								if (A.getValue().isEmpty()) {
+									continue;
+								}
+								AttributesValues.put(A.getName(), A.getValue());
+
+							}
+
 						}
 					}
-					
-					for(Attribute g:ChildAttributes)
-					{
-						
-						if(g.getValue().isEmpty()) {continue;}
+
+					for (Attribute g : ChildAttributes) {
+
+						if (g.getValue().isEmpty()) {
+							continue;
+						}
 						AttributesValues.put(g.getName(), g.getValue());
-						
+
 					}
-					
+
 				}
-				
-				
+
 			}
-			
 
 			for (Attribute e : Attributes) {
 
-				if(e.getValue().isEmpty()) {continue;}
+				if (e.getValue().isEmpty()) {
+					continue;
+				}
 				AttributesValues.put(e.getName(), e.getValue());
 
 			}

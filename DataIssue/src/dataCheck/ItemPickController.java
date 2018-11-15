@@ -102,7 +102,7 @@ public class ItemPickController {
 			EnvironmentVal.setItems(EnvironmentValues);
 			
 			String Path= ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
-			System.out.println(Path);
+			//System.out.println(Path);
 			File file = new File(Path);
 	        Image image = new Image(file.toURI().toString());
 	        LogoView.setImage(image);
