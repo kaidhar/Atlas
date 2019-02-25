@@ -119,56 +119,74 @@ public class ItemInfoController {
 	@FXML
 	void SearchAction(ActionEvent event) throws ClassNotFoundException, SQLException, IOException {
 
-		String ItemIDValue = ItemID.getText();
-		String EnvironmentValue = Environment.getSelectionModel().getSelectedItem();
-		String BannerValue = Banner.getSelectionModel().getSelectedItem();
-		String TypeValue = Type.getSelectionModel().getSelectedItem();
-		table.getSelectionModel().clearSelection();
-		resultData.clear();
-		String ItemIDResult = null;
-		String ModelResult = null;
-		String UPCResult = null;
-		String Color_Code=null;
-		String Size_Code=null;
+		try {
+			String ItemIDValue = ItemID.getText();
+			String EnvironmentValue = Environment.getSelectionModel().getSelectedItem();
+			String BannerValue = Banner.getSelectionModel().getSelectedItem();
+			String TypeValue = Type.getSelectionModel().getSelectedItem();
+			table.getSelectionModel().clearSelection();
+			resultData.clear();
+			String ItemIDResult = null;
+			String ModelResult = null;
+			String UPCResult = null;
+			String Color_Code=null;
+			String Size_Code=null;
 
-		System.out.println(ItemIDValue);
-		System.out.println(EnvironmentValue);
+			System.out.println(ItemIDValue);
+			System.out.println(EnvironmentValue);
 
-		DataValidator DBV = new DataValidator();
+			DataValidator DBV = new DataValidator();
 
-		DBV.openConnection(EnvironmentValue);
-		List<String> results = new ArrayList<String>();
-		List<String> resultsColorSize = new ArrayList<String>();
-		HashMap<String, String> resultsColorSizeModel = new HashMap<String,String>();
+			DBV.openConnection(EnvironmentValue);
+			List<String> results = new ArrayList<String>();
+			List<String> resultsColorSize = new ArrayList<String>();
+			HashMap<String, String> resultsColorSizeModel = new HashMap<String,String>();
 
-		switch (TypeValue) {
+			switch (TypeValue) {
 
-		case "ItemID/SKU":
-			
-			results = DBV.getDBItemInfoItemID(EnvironmentValue,ItemIDValue);
-			ItemIDResult = results.get(1);
-			ModelResult = results.get(2);
-			UPCResult = results.get(0);
-			
-			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
-			Color_Code = resultsColorSizeModel.get("Color");
-			Size_Code = resultsColorSizeModel.get("Size");
-			setUpdata(ItemIDResult,ModelResult,UPCResult,Size_Code,Color_Code);
-			results.clear();
-			
-			break;
+			case "ItemID/SKU":
+				
+				results = DBV.getDBItemInfoItemID(EnvironmentValue,ItemIDValue);
+				ItemIDResult = results.get(1);
+				ModelResult = results.get(2);
+				UPCResult = results.get(0);
+				
+				resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
+				Color_Code = resultsColorSizeModel.get("Color");
+				Size_Code = resultsColorSizeModel.get("Size");
+				setUpdata(ItemIDResult,ModelResult,UPCResult,Size_Code,Color_Code);
+				results.clear();
+				
+				break;
 
-		case "Model/WebID":
-			
-			ResultSet resultModel =DBV.getDBItemInfoModel(EnvironmentValue,ItemIDValue);
-			ResultSetMetaData rsmd = resultModel.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			
-			while(resultModel.next()) {
-				for (int i = 1; i <= columnsNumber; i++) {
-					results.add(resultModel.getString(i));
+			case "Model/WebID":
+				
+				ResultSet resultModel =DBV.getDBItemInfoModel(EnvironmentValue,ItemIDValue);
+				ResultSetMetaData rsmd = resultModel.getMetaData();
+				int columnsNumber = rsmd.getColumnCount();
+				
+				while(resultModel.next()) {
+					for (int i = 1; i <= columnsNumber; i++) {
+						results.add(resultModel.getString(i));
+
+					}
+					ItemIDResult = results.get(1);
+					ModelResult = results.get(2);
+					UPCResult = results.get(0);
+					resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
+					Color_Code = resultsColorSizeModel.get("Color");
+					Size_Code = resultsColorSizeModel.get("Size");
+					setUpdata(ItemIDResult,ModelResult,UPCResult,Size_Code,Color_Code);
+
+					results.clear();
 
 				}
+
+				
+				break;
+
+			case "UPC":
+				results =DBV.getDBItemInfoUPC(EnvironmentValue,ItemIDValue);
 				ItemIDResult = results.get(1);
 				ModelResult = results.get(2);
 				UPCResult = results.get(0);
@@ -176,33 +194,24 @@ public class ItemInfoController {
 				Color_Code = resultsColorSizeModel.get("Color");
 				Size_Code = resultsColorSizeModel.get("Size");
 				setUpdata(ItemIDResult,ModelResult,UPCResult,Size_Code,Color_Code);
-
-				results.clear();
+				break;
 
 			}
-
+			table.getSelectionModel().setCellSelectionEnabled(true);
+			table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			table.setItems(resultData);	
+			results.clear();
+			resultsColorSize.clear();
 			
-			break;
-
-		case "UPC":
-			results =DBV.getDBItemInfoUPC(EnvironmentValue,ItemIDValue);
-			ItemIDResult = results.get(1);
-			ModelResult = results.get(2);
-			UPCResult = results.get(0);
-			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue,ItemIDResult);
-			Color_Code = resultsColorSizeModel.get("Color");
-			Size_Code = resultsColorSizeModel.get("Size");
-			setUpdata(ItemIDResult,ModelResult,UPCResult,Size_Code,Color_Code);
-			break;
+			DBV.closeConnection();
+		} catch (Exception e) {
+			
+			ObservableList<TableDataItemInfo> resultData = FXCollections.observableArrayList();
+			resultData.add(new TableDataItemInfo("", "", "", "","",""));
+			table.setItems(resultData);
+			resultData.clear();
 
 		}
-		table.getSelectionModel().setCellSelectionEnabled(true);
-		table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		table.setItems(resultData);	
-		results.clear();
-		resultsColorSize.clear();
-		
-		DBV.closeConnection();
 		
 	}
 	

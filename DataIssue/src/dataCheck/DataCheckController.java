@@ -348,109 +348,160 @@ public class DataCheckController {
 	@FXML
 	void checkInventory(ActionEvent event) throws ClassNotFoundException, SQLException, IOException, JSchException {
 
-		String ItemIDValue = ItemID.getText();
-		String EnvironmentValue = Environment.getSelectionModel().getSelectedItem();
-		String BannerValue = Banner.getSelectionModel().getSelectedItem();
-		System.out.println(ItemIDValue);
-		System.out.println(EnvironmentValue);
-		OMSDONE.setText("");
-		WEBDONE.setText("");
+		try {
+			String ItemIDValue = ItemID.getText();
+			String EnvironmentValue = Environment.getSelectionModel().getSelectedItem();
+			String BannerValue = Banner.getSelectionModel().getSelectedItem();
+			System.out.println(ItemIDValue);
+			System.out.println(EnvironmentValue);
+			OMSDONE.setText("");
+			WEBDONE.setText("");
 
-		if (BannerValue == "OFF") {
-			BannerValue = "OFF5";
-
-		}
-
-		DataValidator DBV = new DataValidator();
-
-		DBV.openConnection(EnvironmentValue);
-
-		ResultSet rs = DBV.getDBResultsOMS(EnvironmentValue, ItemIDValue, BannerValue);
-
-		ResultSet rsBOPIS = DBV.getDBResultsBOPIS(EnvironmentValue, ItemIDValue, BannerValue);
-
-		ResultSet rsWeb = DBV.getDBResultsWebValue(EnvironmentValue, ItemIDValue);
-
-		ResultSet rsDirty = DBV.getDBResultsDirtyNode(EnvironmentValue, ItemIDValue, BannerValue);
-
-		ResultSetMetaData rsmdWebValue = rsWeb.getMetaData();
-		int columnsNumberWebValue = rsmdWebValue.getColumnCount();
-		List<String> WebValue = new ArrayList<String>();
-
-		while (rsWeb.next()) {
-			for (int i = 1; i <= columnsNumberWebValue; i++) {
-				WebValue.add(rsWeb.getString(i));
+			if (BannerValue == "OFF") {
+				BannerValue = "OFF5";
 
 			}
 
-		}
+			DataValidator DBV = new DataValidator();
 
-		ResultSetMetaData rsmdBOPIS = rsBOPIS.getMetaData();
-		int columnsNumberBOPIS = rsmdBOPIS.getColumnCount();
-		List<String> resultsBOPIS = new ArrayList<String>();
+			DBV.openConnection(EnvironmentValue);
 
-		while (rsBOPIS.next()) {
-			for (int i = 1; i <= columnsNumberBOPIS; i++) {
-				resultsBOPIS.add(rsBOPIS.getString(i));
+			ResultSet rs = DBV.getDBResultsOMS(EnvironmentValue, ItemIDValue, BannerValue);
 
-			}
+			ResultSet rsBOPIS = DBV.getDBResultsBOPIS(EnvironmentValue, ItemIDValue, BannerValue);
 
-		}
+			ResultSet rsWeb = DBV.getDBResultsWebValue(EnvironmentValue, ItemIDValue);
 
-		/*
-		 * 
-		 * Description: Method to make a call to web DB and retrieve the Onhand and
-		 * sellable quantity Author: Kartikay Dhar Date: 08/08/2018
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		String ItemKey = WebValue.get(0);
-		ResultSet rsWebDB;
-		List<String> resultsBanner = new ArrayList<String>();
+			ResultSet rsDirty = DBV.getDBResultsDirtyNode(EnvironmentValue, ItemIDValue, BannerValue);
 
-		switch (BannerValue) {
+			ResultSetMetaData rsmdWebValue = rsWeb.getMetaData();
+			int columnsNumberWebValue = rsmdWebValue.getColumnCount();
+			List<String> WebValue = new ArrayList<String>();
 
-		case "LT":
-
-			DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
-			rsWebDB = DBV.getDBResultsLT(ItemKey);
-
-			ResultSetMetaData rsmdLT = rsWebDB.getMetaData();
-			int columnsNumberLT = rsmdLT.getColumnCount();
-
-			while (rsWebDB.next()) {
-				for (int i = 1; i <= columnsNumberLT; i++) {
-					resultsBanner.add(rsWebDB.getString(i));
+			while (rsWeb.next()) {
+				for (int i = 1; i <= columnsNumberWebValue; i++) {
+					WebValue.add(rsWeb.getString(i));
 
 				}
 
 			}
 
-			DBV.closeConnectionWeb();
-			break; // optional
+			ResultSetMetaData rsmdBOPIS = rsBOPIS.getMetaData();
+			int columnsNumberBOPIS = rsmdBOPIS.getColumnCount();
+			List<String> resultsBOPIS = new ArrayList<String>();
 
-		case "BAY":
+			while (rsBOPIS.next()) {
+				for (int i = 1; i <= columnsNumberBOPIS; i++) {
+					resultsBOPIS.add(rsBOPIS.getString(i));
 
-			if (EnvironmentValue.equals("QA3")) {
-				resultsBanner.add("Pending");
-				resultsBanner.add("Pending");
+				}
+
 			}
 
-			else {
+			/*
+			 * 
+			 * Description: Method to make a call to web DB and retrieve the Onhand and
+			 * sellable quantity Author: Kartikay Dhar Date: 08/08/2018
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 */
+			String ItemKey = WebValue.get(0);
+			ResultSet rsWebDB;
+			List<String> resultsBanner = new ArrayList<String>();
+
+			switch (BannerValue) {
+
+			case "LT":
+
+				DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
+				rsWebDB = DBV.getDBResultsLT(ItemKey);
+
+				ResultSetMetaData rsmdLT = rsWebDB.getMetaData();
+				int columnsNumberLT = rsmdLT.getColumnCount();
+
+				while (rsWebDB.next()) {
+					for (int i = 1; i <= columnsNumberLT; i++) {
+						resultsBanner.add(rsWebDB.getString(i));
+
+					}
+
+				}
+
+				DBV.closeConnectionWeb();
+				break; // optional
+
+			case "BAY":
+
+				if (EnvironmentValue.equals("QA3")) {
+					resultsBanner.add("Pending");
+					resultsBanner.add("Pending");
+				}
+
+				else {
+					try {
+						DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
+					} catch (Exception e1) {
+
+						System.out.println(e1.toString());
+						resultsBanner.add("Okta");
+						resultsBanner.add("Connect");
+						break;
+
+					}
+					rsWebDB = DBV.getDBResultsBAY(ItemIDValue);
+
+					rsWebDB.beforeFirst();
+
+					while (rsWebDB.next()) {
+
+						for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+							resultsBanner.add(rsWebDB.getString(i));
+
+						}
+
+					}
+
+					DBV.closeConnectionWeb();
+				}
+
+				break;
+
+			case "SAKS":
+
+				DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
+				rsWebDB = DBV.getDBResultsSAKS(ItemIDValue);
+
+				ResultSetMetaData rsmdSAKS = rsWebDB.getMetaData();
+				int columnsNumberSAKS = rsmdSAKS.getColumnCount();
+
+				while (rsWebDB.next()) {
+					for (int i = 1; i <= columnsNumberSAKS; i++) {
+						resultsBanner.add(rsWebDB.getString(i));
+
+					}
+
+				}
+
+				DBV.closeConnectionWeb();
+				break; // optional
+
+			case "OFF5":
+
 				try {
 					DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
 				} catch (Exception e1) {
 
 					System.out.println(e1.toString());
-					resultsBanner.add("Okta");
+					resultsBanner.add("AnyConnect");
 					resultsBanner.add("Connect");
 					break;
 
 				}
-				rsWebDB = DBV.getDBResultsBAY(ItemIDValue);
+
+				rsWebDB = DBV.getDBResultsOFF5(ItemIDValue);
 
 				rsWebDB.beforeFirst();
 
@@ -464,154 +515,112 @@ public class DataCheckController {
 				}
 
 				DBV.closeConnectionWeb();
-			}
-
-			break;
-
-		case "SAKS":
-
-			DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
-			rsWebDB = DBV.getDBResultsSAKS(ItemIDValue);
-
-			ResultSetMetaData rsmdSAKS = rsWebDB.getMetaData();
-			int columnsNumberSAKS = rsmdSAKS.getColumnCount();
-
-			while (rsWebDB.next()) {
-				for (int i = 1; i <= columnsNumberSAKS; i++) {
-					resultsBanner.add(rsWebDB.getString(i));
-
-				}
-
-			}
-
-			DBV.closeConnectionWeb();
-			break; // optional
-
-		case "OFF5":
-
-			try {
-				DBV.openConnectionWebDB(EnvironmentValue, BannerValue);
-			} catch (Exception e1) {
-
-				System.out.println(e1.toString());
-				resultsBanner.add("AnyConnect");
-				resultsBanner.add("Connect");
 				break;
 
+			default:
+				resultsBanner.add("pending");
+				resultsBanner.add("pending");
+
 			}
 
-			rsWebDB = DBV.getDBResultsOFF5(ItemIDValue);
+			/*
+			 * 
+			 * Description: Method to Update Atlas's Table. Author: Kartikay Dhar Date:
+			 * 08/08/2018
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 */
 
-			rsWebDB.beforeFirst();
+			List<String> results = new ArrayList<String>();
+			String OMSInv = null;
+			String DCStore = null;
+			String BOPIS = null;
+			String WH_Quantity = null;
+			String ON_Hand_Quantity = null;
+			String DCAvailable = null;
+			String StoreAvailable = null;
+			String VendorAvailable = null;
+			String Status = null;
+			String Dirty = null;
+			List<String> resultsDirty = new ArrayList<String>();
 
-			while (rsWebDB.next()) {
+			ObservableList<TableData> resultData = FXCollections.observableArrayList();
 
-				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					resultsBanner.add(rsWebDB.getString(i));
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					results.add(rs.getString(i));
+
+				}
+				OMSInv = results.get(0);
+				DCStore = results.get(1).trim();
+				BOPIS = resultsBOPIS.get(0);
+				DCAvailable = resultsBOPIS.get(1);
+				StoreAvailable = resultsBOPIS.get(2);
+				VendorAvailable = resultsBOPIS.get(3);
+				Status = resultsBOPIS.get(4);
+
+				while (rsDirty.next()) {
+
+					resultsDirty.add(rsDirty.getString(1).trim());
 
 				}
 
-			}
+				for (String node : resultsDirty)
 
-			DBV.closeConnectionWeb();
-			break;
+				{
 
-		default:
-			resultsBanner.add("pending");
-			resultsBanner.add("pending");
+					if (DCStore.equals(node)) {
 
-		}
+						Dirty = "Y";
 
-		/*
-		 * 
-		 * Description: Method to Update Atlas's Table. Author: Kartikay Dhar Date:
-		 * 08/08/2018
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
+					} else {
+						Dirty = "N";
+					}
 
-		List<String> results = new ArrayList<String>();
-		String OMSInv = null;
-		String DCStore = null;
-		String BOPIS = null;
-		String WH_Quantity = null;
-		String ON_Hand_Quantity = null;
-		String DCAvailable = null;
-		String StoreAvailable = null;
-		String VendorAvailable = null;
-		String Status = null;
-		String Dirty = null;
-		List<String> resultsDirty = new ArrayList<String>();
-
-		ObservableList<TableData> resultData = FXCollections.observableArrayList();
-
-		ResultSetMetaData rsmd = rs.getMetaData();
-		int columnsNumber = rsmd.getColumnCount();
-
-		while (rs.next()) {
-			for (int i = 1; i <= columnsNumber; i++) {
-				results.add(rs.getString(i));
-
-			}
-			OMSInv = results.get(0);
-			DCStore = results.get(1).trim();
-			BOPIS = resultsBOPIS.get(0);
-			DCAvailable = resultsBOPIS.get(1);
-			StoreAvailable = resultsBOPIS.get(2);
-			VendorAvailable = resultsBOPIS.get(3);
-			Status = resultsBOPIS.get(4);
-
-			while (rsDirty.next()) {
-
-				resultsDirty.add(rsDirty.getString(1).trim());
-
-			}
-
-			for (String node : resultsDirty)
-
-			{
-
-				if (DCStore.equals(node)) {
-
-					Dirty = "Y";
-
-				} else {
-					Dirty = "N";
 				}
 
+				String ItemIDResult = null;
+				String ModelResult = null;
+				String UPCResult = null;
+				String Color_Code = null;
+				String Size_Code = null;
+				HashMap<String, String> resultsColorSizeModel = new HashMap<String, String>();
+
+				results = DBV.getDBItemInfoItemID(EnvironmentValue, ItemIDValue);
+				ItemIDResult = results.get(1);
+				ModelResult = results.get(2);
+				UPCResult = results.get(0);
+
+				resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue, ItemIDResult);
+				Color_Code = resultsColorSizeModel.get("Color");
+				Size_Code = resultsColorSizeModel.get("Size");
+
+				WH_Quantity = resultsBanner.get(1);
+				ON_Hand_Quantity = resultsBanner.get(0);
+
+				resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, Dirty, StoreAvailable,
+						VendorAvailable, Size_Code, Color_Code, ModelResult, Status));
+
+				results.clear();
+
 			}
-
-			String ItemIDResult = null;
-			String ModelResult = null;
-			String UPCResult = null;
-			String Color_Code = null;
-			String Size_Code = null;
-			HashMap<String, String> resultsColorSizeModel = new HashMap<String, String>();
-
-			results = DBV.getDBItemInfoItemID(EnvironmentValue, ItemIDValue);
-			ItemIDResult = results.get(1);
-			ModelResult = results.get(2);
-			UPCResult = results.get(0);
-
-			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue, ItemIDResult);
-			Color_Code = resultsColorSizeModel.get("Color");
-			Size_Code = resultsColorSizeModel.get("Size");
-
-			WH_Quantity = resultsBanner.get(1);
-			ON_Hand_Quantity = resultsBanner.get(0);
-
-			resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, Dirty, StoreAvailable,
-					VendorAvailable, Size_Code, Color_Code, ModelResult, Status));
-
-			results.clear();
+			table.getSelectionModel().setCellSelectionEnabled(true);
+			table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			table.setItems(resultData);
+		} catch (Exception e) {
+			
+			ObservableList<TableData> resultData = FXCollections.observableArrayList();
+			resultData.add(new TableData("", "", "", "", "", "", "", "", "", "", "", ""));
+			table.setItems(resultData);
+			resultData.clear();
 
 		}
-		table.getSelectionModel().setCellSelectionEnabled(true);
-		table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		table.setItems(resultData);
 
 	}
 
