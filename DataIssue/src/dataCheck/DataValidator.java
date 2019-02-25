@@ -1,6 +1,5 @@
 package dataCheck;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -36,49 +35,53 @@ public class DataValidator {
 
 	}
 
-	public void openConnectionWebDB(String Environment,String Banner) throws ClassNotFoundException, SQLException, IOException {
+	public void openConnectionWebDB(String Environment, String Banner)
+			throws ClassNotFoundException, SQLException, IOException {
 
 		Class.forName("oracle.jdbc.OracleDriver");
-		String User = getProperty("User" +Environment+ Banner);
-		String Password = getProperty("PWD" +Environment+ Banner);
-		String Host = getProperty("Host" +Environment+ Banner);
-		String SID = getProperty("SID" +Environment+ Banner);
+		String User = getProperty("User" + Environment + Banner);
+		String Password = getProperty("PWD" + Environment + Banner);
+		String Host = getProperty("Host" + Environment + Banner);
+		String SID = getProperty("SID" + Environment + Banner);
 
 		conWeb = DriverManager.getConnection("jdbc:oracle:thin:@" + Host + ":1521/" + SID, User, Password);
 
 	}
 
-	public ResultSet getDBResultsOMS(String Environment, String ItemID,String BannerValue) throws SQLException, IOException {
+	public ResultSet getDBResultsOMS(String Environment, String ItemID, String BannerValue)
+			throws SQLException, IOException {
 
 		Statement stmt = con.createStatement();
 		String Query = "select Quantity,Shipnode_key from OMS" + Environment
 				+ ".yfs_inventory_supply where inventory_item_key in ((Select inventory_item_key from OMS" + Environment
-				+ ".YFS_INVENTORY_ITEM where item_id='" + ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"')) and SUPPLY_TYPE='ONHAND'";
+				+ ".YFS_INVENTORY_ITEM where item_id='" + ItemID + "'  and UOM='EACH' and organization_code='"
+				+ BannerValue + "')) and SUPPLY_TYPE='ONHAND'";
 		ResultSet rs = stmt.executeQuery(Query);
 
 		return rs;
 
 	}
 
-	
 	// IS_SHIPPING_ALLOWED Doesn't work for DC
-	public ResultSet getDBResultsBOPIS(String Environment, String ItemID,String BannerValue) throws SQLException, IOException {
+	public ResultSet getDBResultsBOPIS(String Environment, String ItemID, String BannerValue)
+			throws SQLException, IOException {
 
-		Statement stmt = con.createStatement();				
-		String Query = "select is_Pickup_Allowed,IS_SHIPPING_ALLOWED,EXTN_STORE_SHIP_ALLOWED,EXTN_IS_DSV_ENABLED,Status from OMS" + Environment + ".yfs_Item where item_id='" + 
-		ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"'";
+		Statement stmt = con.createStatement();
+		String Query = "select is_Pickup_Allowed,IS_SHIPPING_ALLOWED,EXTN_STORE_SHIP_ALLOWED,EXTN_IS_DSV_ENABLED,Status from OMS"
+				+ Environment + ".yfs_Item where item_id='" + ItemID + "'  and UOM='EACH' and organization_code='"
+				+ BannerValue + "'";
 		ResultSet rs = stmt.executeQuery(Query);
 
 		return rs;
 
 	}
-	
-	
-	public ResultSet getDBResultsDirtyNode(String Environment, String ItemID,String BannerValue) throws SQLException, IOException {
 
-		Statement stmt = con.createStatement();				
-		String Query = "select node_key from OMS" + Environment + ".yfs_inventory_node_control where item_id='" + 
-		ItemID + "'  and UOM='EACH' and organization_code='"+BannerValue+"'";
+	public ResultSet getDBResultsDirtyNode(String Environment, String ItemID, String BannerValue)
+			throws SQLException, IOException {
+
+		Statement stmt = con.createStatement();
+		String Query = "select node_key from OMS" + Environment + ".yfs_inventory_node_control where item_id='" + ItemID
+				+ "'  and UOM='EACH' and organization_code='" + BannerValue + "'";
 		ResultSet rs = stmt.executeQuery(Query);
 
 		return rs;
@@ -138,55 +141,54 @@ public class DataValidator {
 			tempValue = String.valueOf(updateValue);
 
 		}
-//		String Query = "UPDATE OMS" + environmentValue + ".yfs_inventory_supply SET Quantity = '" + tempValue
-//				+ "' WHERE inventory_item_key in (Select inventory_item_key from OMS" + environmentValue
-//				+ ".YFS_INVENTORY_ITEM where item_id='" + itemIDValue + "' and UOM='EACH') and Shipnode_key='"
-//				+ shipNodeForInventoryValue + "'";
-//
-//		PreparedStatement preparedStmt = con.prepareStatement(Query);
-//
-//		preparedStmt.executeUpdate();
-		
-		String Query2 = "update oms"+environmentValue+".yfs_item set onhand_safety_factor_qty='0',extn_aggregate_safety_factor = '0' where item_id = '"+itemIDValue+"' and UOM='EACH'";
+		// String Query = "UPDATE OMS" + environmentValue + ".yfs_inventory_supply SET
+		// Quantity = '" + tempValue
+		// + "' WHERE inventory_item_key in (Select inventory_item_key from OMS" +
+		// environmentValue
+		// + ".YFS_INVENTORY_ITEM where item_id='" + itemIDValue + "' and UOM='EACH')
+		// and Shipnode_key='"
+		// + shipNodeForInventoryValue + "'";
+		//
+		// PreparedStatement preparedStmt = con.prepareStatement(Query);
+		//
+		// preparedStmt.executeUpdate();
+
+		String Query2 = "update oms" + environmentValue
+				+ ".yfs_item set onhand_safety_factor_qty='0',extn_aggregate_safety_factor = '0' where item_id = '"
+				+ itemIDValue + "' and UOM='EACH'";
 		PreparedStatement preparedStmt = con.prepareStatement(Query2);
 		preparedStmt.executeUpdate();
-		
-		
-		String Query3 = "update oms"+environmentValue+".YFS_SKU_SAFETY_FACTOR_DEFN "
-				+ ""
-				+ "set ONHAND_SAFETY_FACTOR_QTY='0' "
-				+ "where PARENT_KEY in (select ITEM_KEY from OMS"+environmentValue+".yfs_Item where item_id = '"+itemIDValue+"'  and UOM='EACH')";
+
+		String Query3 = "update oms" + environmentValue + ".YFS_SKU_SAFETY_FACTOR_DEFN " + ""
+				+ "set ONHAND_SAFETY_FACTOR_QTY='0' " + "where PARENT_KEY in (select ITEM_KEY from OMS"
+				+ environmentValue + ".yfs_Item where item_id = '" + itemIDValue + "'  and UOM='EACH')";
 		preparedStmt = con.prepareStatement(Query3);
 		preparedStmt.executeUpdate();
 		con.commit();
 
 	}
 
-	public void getDBResultsWeb(String environmentValue, String BannerValue, String itemIDValue, String webAdjustValue, String uPCValue)
-			throws ClassNotFoundException, SQLException, IOException {
+	public void getDBResultsWeb(String environmentValue, String BannerValue, String itemIDValue, String webAdjustValue,
+			String uPCValue) throws ClassNotFoundException, SQLException, IOException {
 
 		int finalQuantity1;
 		int finalQuantity2;
 		int webAdjustValueWeb = Integer.parseInt(webAdjustValue);
-		
-		Statement stmt =  null;
-		String firstQuery=null;
-		int StoreQTY=0;
-		int OnhandQTY=0;
+
+		Statement stmt = null;
+		String firstQuery = null;
+		int StoreQTY = 0;
+		int OnhandQTY = 0;
 		String Query = null;
-		
-		
-		
-		
 
 		switch (BannerValue) {
 
 		case "SAKS":
-			
-			openConnectionWebDB(environmentValue,BannerValue);
-			
+
+			openConnectionWebDB(environmentValue, BannerValue);
+
 			stmt = conWeb.createStatement();
-			 firstQuery = "select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
+			firstQuery = "select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
 					+ itemIDValue + "'";
 			ResultSet rsSAKS = stmt.executeQuery(firstQuery);
 
@@ -207,8 +209,8 @@ public class DataValidator {
 			finalQuantity1 = StoreQTY + webAdjustValueWeb;
 			finalQuantity2 = OnhandQTY + webAdjustValueWeb;
 
-			 Query = "Update saks_custom.inventory SET STORE_QTY = '" + finalQuantity1
-					+ "' , IN_STOCK_SELLABLE_QTY = '" + finalQuantity2 + "' where SKU_CODE='" + itemIDValue + "'";
+			Query = "Update saks_custom.inventory SET STORE_QTY = '" + finalQuantity1 + "' , IN_STOCK_SELLABLE_QTY = '"
+					+ finalQuantity2 + "' where SKU_CODE='" + itemIDValue + "'";
 
 			PreparedStatement preparedStmtSAKS = conWeb.prepareStatement(Query);
 
@@ -216,14 +218,13 @@ public class DataValidator {
 
 			closeConnectionWeb();
 			break; // optional
-			
-			
+
 		case "BAY":
-			
-			openConnectionWebDB(environmentValue,BannerValue);
-			
+
+			openConnectionWebDB(environmentValue, BannerValue);
+
 			stmt = conWeb.createStatement();
-			 firstQuery = "select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
+			firstQuery = "select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
 					+ itemIDValue + "'";
 			ResultSet rsBAY = stmt.executeQuery(firstQuery);
 
@@ -244,8 +245,8 @@ public class DataValidator {
 			finalQuantity1 = StoreQTY + webAdjustValueWeb;
 			finalQuantity2 = OnhandQTY + webAdjustValueWeb;
 
-			 Query = "Update saks_custom.inventory SET STORE_QTY = '" + finalQuantity1
-					+ "' , IN_STOCK_SELLABLE_QTY = '" + finalQuantity2 + "' where SKU_CODE='" + itemIDValue + "'";
+			Query = "Update saks_custom.inventory SET STORE_QTY = '" + finalQuantity1 + "' , IN_STOCK_SELLABLE_QTY = '"
+					+ finalQuantity2 + "' where SKU_CODE='" + itemIDValue + "'";
 
 			PreparedStatement preparedStmtBAY = conWeb.prepareStatement(Query);
 
@@ -253,15 +254,14 @@ public class DataValidator {
 
 			closeConnectionWeb();
 			break; // optional
-			
-			
+
 		case "OFF5":
-			
-			
-			openConnectionWebDB(environmentValue,BannerValue);
-			
+
+			openConnectionWebDB(environmentValue, BannerValue);
+
 			stmt = conWeb.createStatement();
-			 firstQuery = "select WH_Sellable_qty, On_Hand_QTY from SAKS_CUSTOM.sku_inventory where sku_id='"+ uPCValue + "'";
+			firstQuery = "select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
+					+ itemIDValue + "'";
 			ResultSet rsOFF5 = stmt.executeQuery(firstQuery);
 
 			List<String> resultsOFF5 = new ArrayList<String>();
@@ -281,8 +281,8 @@ public class DataValidator {
 			finalQuantity1 = StoreQTY + webAdjustValueWeb;
 			finalQuantity2 = OnhandQTY + webAdjustValueWeb;
 
-			 Query = "Update SAKS_CUSTOM.sku_inventory SET WH_Sellable_qty = '" + finalQuantity1
-					+ "' , On_Hand_QTY = '" + finalQuantity2 + "' where SKU_ID='" + uPCValue + "'";
+			Query = "Update saks_custom.inventory SET STORE_QTY = '" + finalQuantity1 + "' , IN_STOCK_SELLABLE_QTY = '"
+					+ finalQuantity2 + "' where SKU_CODE='" + itemIDValue + "'";
 
 			PreparedStatement preparedStmtOFF5 = conWeb.prepareStatement(Query);
 
@@ -290,14 +290,14 @@ public class DataValidator {
 
 			closeConnectionWeb();
 			break; // optional
-			
-			
+
 		case "LT":
-			
-			openConnectionWebDB(environmentValue,BannerValue);
-			
+
+			openConnectionWebDB(environmentValue, BannerValue);
+
 			stmt = conWeb.createStatement();
-			 firstQuery = "select WH_Sellable_qty, On_Hand_QTY from SAKS_CUSTOM.sku_inventory where sku_id='"+ uPCValue + "'";
+			firstQuery = "select WH_Sellable_qty, On_Hand_QTY from SAKS_CUSTOM.sku_inventory where sku_id='" + uPCValue
+					+ "'";
 			ResultSet rsLT = stmt.executeQuery(firstQuery);
 
 			List<String> resultsLT = new ArrayList<String>();
@@ -317,8 +317,8 @@ public class DataValidator {
 			finalQuantity1 = StoreQTY + webAdjustValueWeb;
 			finalQuantity2 = OnhandQTY + webAdjustValueWeb;
 
-			 Query = "Update SAKS_CUSTOM.sku_inventory SET WH_Sellable_qty = '" + finalQuantity1
-					+ "' , On_Hand_QTY = '" + finalQuantity2 + "' where SKU_ID='" + uPCValue + "'";
+			Query = "Update SAKS_CUSTOM.sku_inventory SET WH_Sellable_qty = '" + finalQuantity1 + "' , On_Hand_QTY = '"
+					+ finalQuantity2 + "' where SKU_ID='" + uPCValue + "'";
 
 			PreparedStatement preparedStmtLT = conWeb.prepareStatement(Query);
 
@@ -326,11 +326,7 @@ public class DataValidator {
 
 			closeConnectionWeb();
 			break; // optional
-			
-			
-			
-			
-		
+
 		default:
 			break;
 
@@ -343,8 +339,8 @@ public class DataValidator {
 		Statement stmt = con.createStatement();
 		String Query = "select Quantity,Shipnode_key from OMS" + environmentValue
 				+ ".yfs_inventory_supply where inventory_item_key in (Select inventory_item_key from OMS"
-				+ environmentValue + ".YFS_INVENTORY_ITEM where item_id='" + itemIDValue + "' and UOM='EACH' ) and Shipnode_key = '"
-				+ shipNodeForInventoryValue + "'";
+				+ environmentValue + ".YFS_INVENTORY_ITEM where item_id='" + itemIDValue
+				+ "' and UOM='EACH' ) and Shipnode_key = '" + shipNodeForInventoryValue + "'";
 
 		ResultSet rs = stmt.executeQuery(Query);
 
@@ -356,7 +352,8 @@ public class DataValidator {
 		Statement stmt = con.createStatement();
 
 		String Query = "Select ALIAS_VALUE from OMS" + environmentValue
-				+ ".YFS_ITEM_ALIAS WHERE ITEM_KEY in (SELECT ITEM_KEY FROM YFS_ITEM where item_id='" + itemIDValue + "' and UOM='EACH')";
+				+ ".YFS_ITEM_ALIAS WHERE ITEM_KEY in (SELECT ITEM_KEY FROM YFS_ITEM where item_id='" + itemIDValue
+				+ "' and UOM='EACH')";
 
 		ResultSet rs = stmt.executeQuery(Query);
 
@@ -403,7 +400,7 @@ public class DataValidator {
 				+ environmentValue + ".yfs_inventory_supply.inventory_item_key = oms" + environmentValue
 				+ ".YFS_INVENTORY_ITEM.inventory_item_key where oms" + environmentValue
 				+ ".YFS_INVENTORY_ITEM.Organization_Code = '" + BannerValue + "' and oms" + environmentValue
-				+ ".yfs_inventory_supply.Quantity>100  and oms" +environmentValue+".YFS_INVENTORY_ITEM.UOM='EACH'";
+				+ ".yfs_inventory_supply.Quantity>100  and oms" + environmentValue + ".YFS_INVENTORY_ITEM.UOM='EACH'";
 
 		ResultSet rs = stmt.executeQuery(Query);
 
@@ -450,12 +447,13 @@ public class DataValidator {
 		return null;
 	}
 
-	public String getDBResultsUPC(String itemIDValue,String EnvironmentValue) throws SQLException {
+	public String getDBResultsUPC(String itemIDValue, String EnvironmentValue) throws SQLException {
 
 		Statement stmt = con.createStatement();
 
-		String Query = "Select ALIAS_VALUE from OMS"+EnvironmentValue+".YFS_ITEM_ALIAS WHERE"
-				+ " ITEM_KEY=(SELECT ITEM_KEY FROM OMS"+EnvironmentValue+".YFS_ITEM where item_id='"+itemIDValue+"')";
+		String Query = "Select ALIAS_VALUE from OMS" + EnvironmentValue + ".YFS_ITEM_ALIAS WHERE"
+				+ " ITEM_KEY=(SELECT ITEM_KEY FROM OMS" + EnvironmentValue + ".YFS_ITEM where item_id='" + itemIDValue
+				+ "')";
 		List<String> results = new ArrayList<String>();
 		ResultSet rs = stmt.executeQuery(Query);
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -465,33 +463,24 @@ public class DataValidator {
 			for (int i = 1; i <= columnsNumber; i++) {
 				results.add(rs.getString(i));
 
-			}}
+			}
+		}
 
 		String UPC = results.get(0);
 		return UPC;
-		
-		
-		
+
 	}
 
 	public List<String> getDBItemInfoItemID(String environmentValue, String itemIDValue) throws SQLException {
-		String Query = "Select OMS"+environmentValue+".YFS_ITEM_ALIAS.Alias_Value, OMS"+environmentValue+".YFS_ITEM.Item_id,OMS"+environmentValue+".YFS_ITEM.Model\n" + 
-				"\n" + 
-				"From OMS"+environmentValue+".YFS_ITEM_ALIAS\n" + 
-				"\n" + 
-				"Inner Join\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM\n" + 
-				"\n" + 
-				"on\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM_ALIAS.Item_Key=OMS"+environmentValue+".YFS_ITEM.ITEM_KEY\n" + 
-				"where\n" + 
-				"OMS"+environmentValue+".YFS_ITEM.Item_id = '"+itemIDValue+"'  and OMS"+environmentValue+".YFS_ITEM.UOM='EACH'  ";
-		
-		
+		String Query = "Select OMS" + environmentValue + ".YFS_ITEM_ALIAS.Alias_Value, OMS" + environmentValue
+				+ ".YFS_ITEM.Item_id,OMS" + environmentValue + ".YFS_ITEM.Model\n" + "\n" + "From OMS"
+				+ environmentValue + ".YFS_ITEM_ALIAS\n" + "\n" + "Inner Join\n" + "\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM\n" + "\n" + "on\n" + "\n" + "OMS" + environmentValue + ".YFS_ITEM_ALIAS.Item_Key=OMS"
+				+ environmentValue + ".YFS_ITEM.ITEM_KEY\n" + "where\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM.Item_id = '" + itemIDValue + "'  and OMS" + environmentValue + ".YFS_ITEM.UOM='EACH'  ";
+
 		Statement stmt = con.createStatement();
-		
+
 		List<String> results = new ArrayList<String>();
 		ResultSet rs = stmt.executeQuery(Query);
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -501,74 +490,54 @@ public class DataValidator {
 			for (int i = 1; i <= columnsNumber; i++) {
 				results.add(rs.getString(i));
 
-			}}
+			}
+		}
 
 		return results;
-		
-		
-		
-		
-		
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public ResultSet getDBItemInfoModel(String environmentValue, String ModelValue) throws SQLException {
-		
-		
-		String Query = "Select OMS"+environmentValue+".YFS_ITEM_ALIAS.Alias_Value, OMS"+environmentValue+".YFS_ITEM.Item_id,OMS"+environmentValue+".YFS_ITEM.Model\n" + 
-				"\n" + 
-				"From OMS"+environmentValue+".YFS_ITEM_ALIAS\n" + 
-				"\n" + 
-				"Inner Join\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM\n" + 
-				"\n" + 
-				"on\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM_ALIAS.Item_Key=OMS"+environmentValue+".YFS_ITEM.ITEM_KEY\n" + 
-				"where\n" + 
-				"OMS"+environmentValue+".YFS_ITEM.Model= '"+ModelValue+"'  and OMS"+environmentValue+".YFS_ITEM.UOM='EACH'";
-		
-		
+
+		String Query = "Select OMS" + environmentValue + ".YFS_ITEM_ALIAS.Alias_Value, OMS" + environmentValue
+				+ ".YFS_ITEM.Item_id,OMS" + environmentValue + ".YFS_ITEM.Model\n" + "\n" + "From OMS"
+				+ environmentValue + ".YFS_ITEM_ALIAS\n" + "\n" + "Inner Join\n" + "\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM\n" + "\n" + "on\n" + "\n" + "OMS" + environmentValue + ".YFS_ITEM_ALIAS.Item_Key=OMS"
+				+ environmentValue + ".YFS_ITEM.ITEM_KEY\n" + "where\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM.Model= '" + ModelValue + "'  and OMS" + environmentValue + ".YFS_ITEM.UOM='EACH'";
+
 		Statement stmt = con.createStatement();
-		
+
 		List<String> results = new ArrayList<String>();
 		ResultSet rs = stmt.executeQuery(Query);
-//		ResultSetMetaData rsmd = rs.getMetaData();
-//		int columnsNumber = rsmd.getColumnCount();
-//
-//		while (rs.next()) {
-//			for (int i = 1; i <= columnsNumber; i++) {
-//				results.add(rs.getString(i));
-//
-//			}}
+		// ResultSetMetaData rsmd = rs.getMetaData();
+		// int columnsNumber = rsmd.getColumnCount();
+		//
+		// while (rs.next()) {
+		// for (int i = 1; i <= columnsNumber; i++) {
+		// results.add(rs.getString(i));
+		//
+		// }}
 
 		return rs;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public List<String> getDBItemInfoUPC(String environmentValue, String UPCValue) throws SQLException {
-		
-		
-		String Query = "Select OMS"+environmentValue+".YFS_ITEM_ALIAS.Alias_Value, OMS"+environmentValue+".YFS_ITEM.Item_id,OMS"+environmentValue+".YFS_ITEM.Model\n" + 
-				"\n" + 
-				"From OMS"+environmentValue+".YFS_ITEM_ALIAS\n" + 
-				"\n" + 
-				"Inner Join\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM\n" + 
-				"\n" + 
-				"on\n" + 
-				"\n" + 
-				"OMS"+environmentValue+".YFS_ITEM_ALIAS.Item_Key=OMS"+environmentValue+".YFS_ITEM.ITEM_KEY\n" + 
-				"where\n" + 
-				"OMS"+environmentValue+".YFS_ITEM_ALIAS.ALIAS_VALUE = '"+UPCValue+"' and OMS"+environmentValue+".YFS_ITEM.UOM='EACH'";
-		
-		
+
+		String Query = "Select OMS" + environmentValue + ".YFS_ITEM_ALIAS.Alias_Value, OMS" + environmentValue
+				+ ".YFS_ITEM.Item_id,OMS" + environmentValue + ".YFS_ITEM.Model\n" + "\n" + "From OMS"
+				+ environmentValue + ".YFS_ITEM_ALIAS\n" + "\n" + "Inner Join\n" + "\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM\n" + "\n" + "on\n" + "\n" + "OMS" + environmentValue + ".YFS_ITEM_ALIAS.Item_Key=OMS"
+				+ environmentValue + ".YFS_ITEM.ITEM_KEY\n" + "where\n" + "OMS" + environmentValue
+				+ ".YFS_ITEM_ALIAS.ALIAS_VALUE = '" + UPCValue + "' and OMS" + environmentValue
+				+ ".YFS_ITEM.UOM='EACH'";
+
 		Statement stmt = con.createStatement();
-		
+
 		List<String> results = new ArrayList<String>();
 		ResultSet rs = stmt.executeQuery(Query);
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -578,21 +547,22 @@ public class DataValidator {
 			for (int i = 1; i <= columnsNumber; i++) {
 				results.add(rs.getString(i));
 
-			}}
+			}
+		}
 
 		return results;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public List<String> getDBItemInfoColorSize(String environmentValue, String itemIDValue) throws SQLException {
-		
-		String Query = "select name, value from OMS"+environmentValue+".YFS_ADDITIONAL_ATTRIBUTE where parent_key in "
-				+ "(select item_key from OMS"+environmentValue+".yfs_item where item_id='"+itemIDValue+"' and UOM='EACH') order by NAME";
-		
-		
+
+		String Query = "select name, value from OMS" + environmentValue
+				+ ".YFS_ADDITIONAL_ATTRIBUTE where parent_key in " + "(select item_key from OMS" + environmentValue
+				+ ".yfs_item where item_id='" + itemIDValue + "' and UOM='EACH') order by NAME";
+
 		Statement stmt = con.createStatement();
-		
+
 		List<String> results = new ArrayList<String>();
 		ResultSet rs = stmt.executeQuery(Query);
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -602,35 +572,64 @@ public class DataValidator {
 			for (int i = 1; i <= columnsNumber; i++) {
 				results.add(rs.getString(i));
 
-			}}
+			}
+		}
 
 		return results;
 
 	}
 
-	public HashMap<String,String> getDBItemInfoColorSizeModel(String environmentValue, String itemIDResult) throws SQLException {
-		
-		String Query = "select name, value from OMS"+environmentValue+".YFS_ADDITIONAL_ATTRIBUTE where parent_key in "
-				+ "(select item_key from OMS"+environmentValue+".yfs_item where item_id='"+itemIDResult+"' and UOM='EACH') order by NAME";
-		
-		
+	public HashMap<String, String> getDBItemInfoColorSizeModel(String environmentValue, String itemIDResult)
+			throws SQLException {
+
+		String Query = "select name, value from OMS" + environmentValue
+				+ ".YFS_ADDITIONAL_ATTRIBUTE where parent_key in " + "(select item_key from OMS" + environmentValue
+				+ ".yfs_item where item_id='" + itemIDResult + "' and UOM='EACH') order by NAME";
+
 		Statement stmt = con.createStatement();
-		
-		HashMap<String,String> results = new HashMap<String,String>();
+
+		HashMap<String, String> results = new HashMap<String, String>();
 		ResultSet rs = stmt.executeQuery(Query);
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
 
 		while (rs.next()) {
-			for (int i = 1; i <= columnsNumber-1; i++) {
-				
-				results.put(rs.getString(i), rs.getString(i+1));
+			for (int i = 1; i <= columnsNumber - 1; i++) {
 
+				results.put(rs.getString(i), rs.getString(i + 1));
 
-			}}
+			}
+		}
 
 		return results;
-		
+
+	}
+
+	public ResultSet getDBResultsBAY(String SKUCODEValue) throws SQLException {
+
+		// Statement stmt =
+		// conWeb.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+
+		String Query = "Select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
+				+ SKUCODEValue + "'";
+		PreparedStatement stmt = conWeb.prepareStatement(Query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_READ_ONLY);
+
+		ResultSet rs = stmt.executeQuery();
+
+		return rs;
+
+	}
+
+	public ResultSet getDBResultsOFF5(String itemIDValue) throws SQLException {
+
+		String Query = "Select STORE_QTY,IN_STOCK_SELLABLE_QTY from saks_custom.inventory where SKU_CODE='"
+				+ itemIDValue + "'";
+		PreparedStatement stmt = conWeb.prepareStatement(Query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_READ_ONLY);
+
+		ResultSet rs = stmt.executeQuery();
+		return rs;
 
 	}
 

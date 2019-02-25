@@ -64,6 +64,11 @@
                                  </font>
                               </Label>
                               <Label fx:id="WEBDONE" layoutX="657.0" layoutY="196.0" textFill="#4ea44b" />
+                              <Label layoutX="190.0" layoutY="70.0" text="Supports Slot 5,32&amp;40" textFill="#b2adad">
+                                 <font>
+                                    <Font name="Times New Roman" size="20.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                       <AnchorPane>

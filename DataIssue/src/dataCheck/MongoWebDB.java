@@ -56,7 +56,7 @@ public class MongoWebDB {
 			
 			case "BAY":
 				
-				uri = new MongoClientURI("mongodb://"+User+":"+Password+"@"+Host+":27019/"+Database);
+				uri = new MongoClientURI("mongodb://"+"adarsha.js@hbc.com"+":"+"e5E7q3Y!jps!YFT"+"@"+Host+":27019/"+"bluemartini_services");
 				break;
 				
 			case "SAKS":
@@ -83,7 +83,7 @@ public class MongoWebDB {
 			
 			case "BAY":
 				
-				uri = new MongoClientURI("mongodb://"+User+":"+Password+"@"+Host+":27018/"+Database);
+				uri = new MongoClientURI("mongodb://"+"adarsha.js@hbc.com"+":"+"e5E7q3Y!jps!YFT"+"@"+Host+":27018/"+"bluemartini_services");
 				break;
 				
 			case "SAKS":

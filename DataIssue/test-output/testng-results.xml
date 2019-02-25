@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="2" ignored="0" total="2" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="22" started-at="2018-09-03T13:42:49Z" finished-at="2018-09-03T13:42:50Z">
+  <suite name="Default suite" duration-ms="34" started-at="2019-02-18T13:47:43Z" finished-at="2019-02-18T13:47:43Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="22" started-at="2018-09-03T13:42:49Z" finished-at="2018-09-03T13:42:50Z">
+    <test name="Default test" duration-ms="34" started-at="2019-02-18T13:47:43Z" finished-at="2019-02-18T13:47:43Z">
       <class name="dataCheck.MongoWebDB">
-        <test-method status="FAIL" signature="updateMongo(java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:dataCheck.MongoWebDB@4cf777e8]" name="updateMongo" duration-ms="0" started-at="2018-09-03T13:42:50Z" finished-at="2018-09-03T13:42:50Z">
+        <test-method status="FAIL" signature="updateMongo(java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:dataCheck.MongoWebDB@71e9ddb4]" name="updateMongo" duration-ms="0" started-at="2019-02-18T13:47:43Z" finished-at="2019-02-18T13:47:43Z">
           <exception class="org.testng.TestNGException">
             <message>
               <![CDATA[
@@ -50,7 +50,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
         </test-method> <!-- updateMongo -->
       </class> <!-- dataCheck.MongoWebDB -->
       <class name="dataCheck.DataValidator">
-        <test-method status="FAIL" signature="openConnection(java.lang.String)[pri:0, instance:dataCheck.DataValidator@73ad2d6]" name="openConnection" duration-ms="0" started-at="2018-09-03T13:42:50Z" finished-at="2018-09-03T13:42:50Z">
+        <test-method status="FAIL" signature="openConnection(java.lang.String)[pri:0, instance:dataCheck.DataValidator@65d09a04]" name="openConnection" duration-ms="0" started-at="2019-02-18T13:47:43Z" finished-at="2019-02-18T13:47:43Z">
           <exception class="org.testng.TestNGException">
             <message>
               <![CDATA[
