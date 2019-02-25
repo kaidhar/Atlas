@@ -168,7 +168,6 @@ public class InventoryWebServices {
 
 		String name = getCredentialProperty("UserCredentials");
 		String password = getCredentialProperty("PWDCredentials");
-		System.out.println(name+password);
 		String authString = name + ":" + password;
 		byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
@@ -187,8 +186,6 @@ public class InventoryWebServices {
 		String body = client.execute(httpPost, handler);
 
 		client.close();
-
-		System.out.println(body);
 
 		Multimap<String, String> AttributeValue = XMLConvertor(body);
 		return AttributeValue;
@@ -221,7 +218,6 @@ public class InventoryWebServices {
 
 		for (int temp = 0; temp < Values.size(); temp++) {
 			Element Value = Values.get(temp);
-			System.out.println("\nCurrent Element :" + Value.getName());
 
 			List<Attribute> Attributes = Value.getAttributes();
 			List<Element> Child = Value.getChildren();

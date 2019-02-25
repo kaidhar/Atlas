@@ -168,7 +168,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.1");
+		stage.setTitle("Atlas V3.0");
 		stage.show();
 
 	}
@@ -181,7 +181,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.1");
+		stage.setTitle("Atlas V3.0");
 		stage.show();
 
 	}
@@ -194,7 +194,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.1");
+		stage.setTitle("Atlas V3.0");
 		stage.show();
 
 	}
@@ -207,7 +207,7 @@ public class DataCheckController {
 		Stage stage = new Stage();
 		stage.initOwner(stage.getOwner());
 		stage.setScene(new Scene(root1));
-		stage.setTitle("Atlas V2.1");
+		stage.setTitle("Atlas V3.0");
 		stage.show();
 
 	}
@@ -499,7 +499,7 @@ public class DataCheckController {
 				break;
 
 			}
-			
+
 			rsWebDB = DBV.getDBResultsOFF5(ItemIDValue);
 
 			rsWebDB.beforeFirst();
@@ -515,109 +515,103 @@ public class DataCheckController {
 
 			DBV.closeConnectionWeb();
 			break;
-			
-			default:
-				resultsBanner.add("pending");
-				resultsBanner.add("pending");
-				
-		}
 
-		
-			
-			
-			
-			
-			
-	
-
-	/*
-	 * 
-	 * Description: Method to Update Atlas's Table. Author: Kartikay Dhar Date:
-	 * 08/08/2018
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-
-	List<String> results = new ArrayList<String>();
-	String OMSInv = null;
-	String DCStore = null;
-	String BOPIS = null;
-	String WH_Quantity = null;
-	String ON_Hand_Quantity = null;
-	String DCAvailable = null;
-	String StoreAvailable = null;
-	String VendorAvailable = null;
-	String Status = null;
-	String Dirty = null;
-	List<String> resultsDirty = new ArrayList<String>();
-
-	ObservableList<TableData> resultData = FXCollections.observableArrayList();
-
-	ResultSetMetaData rsmd = rs.getMetaData();
-	int columnsNumber = rsmd.getColumnCount();
-
-	while(rs.next())
-	{
-		for (int i = 1; i <= columnsNumber; i++) {
-			results.add(rs.getString(i));
-
-		}
-		OMSInv = results.get(0);
-		DCStore = results.get(1).trim();
-		BOPIS = resultsBOPIS.get(0);
-		DCAvailable = resultsBOPIS.get(1);
-		StoreAvailable = resultsBOPIS.get(2);
-		VendorAvailable = resultsBOPIS.get(3);
-		Status = resultsBOPIS.get(4);
-
-		while (rsDirty.next()) {
-
-			resultsDirty.add(rsDirty.getString(1).trim());
+		default:
+			resultsBanner.add("pending");
+			resultsBanner.add("pending");
 
 		}
 
-		for (String node : resultsDirty)
+		/*
+		 * 
+		 * Description: Method to Update Atlas's Table. Author: Kartikay Dhar Date:
+		 * 08/08/2018
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 
-		{
+		List<String> results = new ArrayList<String>();
+		String OMSInv = null;
+		String DCStore = null;
+		String BOPIS = null;
+		String WH_Quantity = null;
+		String ON_Hand_Quantity = null;
+		String DCAvailable = null;
+		String StoreAvailable = null;
+		String VendorAvailable = null;
+		String Status = null;
+		String Dirty = null;
+		List<String> resultsDirty = new ArrayList<String>();
 
-			if (DCStore.equals(node)) {
+		ObservableList<TableData> resultData = FXCollections.observableArrayList();
 
-				Dirty = "Y";
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnsNumber = rsmd.getColumnCount();
 
-			} else {
-				Dirty = "N";
+		while (rs.next()) {
+			for (int i = 1; i <= columnsNumber; i++) {
+				results.add(rs.getString(i));
+
+			}
+			OMSInv = results.get(0);
+			DCStore = results.get(1).trim();
+			BOPIS = resultsBOPIS.get(0);
+			DCAvailable = resultsBOPIS.get(1);
+			StoreAvailable = resultsBOPIS.get(2);
+			VendorAvailable = resultsBOPIS.get(3);
+			Status = resultsBOPIS.get(4);
+
+			while (rsDirty.next()) {
+
+				resultsDirty.add(rsDirty.getString(1).trim());
+
 			}
 
+			for (String node : resultsDirty)
+
+			{
+
+				if (DCStore.equals(node)) {
+
+					Dirty = "Y";
+
+				} else {
+					Dirty = "N";
+				}
+
+			}
+
+			String ItemIDResult = null;
+			String ModelResult = null;
+			String UPCResult = null;
+			String Color_Code = null;
+			String Size_Code = null;
+			HashMap<String, String> resultsColorSizeModel = new HashMap<String, String>();
+
+			results = DBV.getDBItemInfoItemID(EnvironmentValue, ItemIDValue);
+			ItemIDResult = results.get(1);
+			ModelResult = results.get(2);
+			UPCResult = results.get(0);
+
+			resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue, ItemIDResult);
+			Color_Code = resultsColorSizeModel.get("Color");
+			Size_Code = resultsColorSizeModel.get("Size");
+
+			WH_Quantity = resultsBanner.get(1);
+			ON_Hand_Quantity = resultsBanner.get(0);
+
+			resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, Dirty, StoreAvailable,
+					VendorAvailable, Size_Code, Color_Code, ModelResult, Status));
+
+			results.clear();
+
 		}
-
-		String ItemIDResult = null;
-		String ModelResult = null;
-		String UPCResult = null;
-		String Color_Code = null;
-		String Size_Code = null;
-		HashMap<String, String> resultsColorSizeModel = new HashMap<String, String>();
-
-		results = DBV.getDBItemInfoItemID(EnvironmentValue, ItemIDValue);
-		ItemIDResult = results.get(1);
-		ModelResult = results.get(2);
-		UPCResult = results.get(0);
-
-		resultsColorSizeModel = DBV.getDBItemInfoColorSizeModel(EnvironmentValue, ItemIDResult);
-		Color_Code = resultsColorSizeModel.get("Color");
-		Size_Code = resultsColorSizeModel.get("Size");
-
-		WH_Quantity = resultsBanner.get(1);
-		ON_Hand_Quantity = resultsBanner.get(0);
-
-		resultData.add(new TableData(OMSInv, DCStore, BOPIS, WH_Quantity, ON_Hand_Quantity, Dirty, StoreAvailable,
-				VendorAvailable, Size_Code, Color_Code, ModelResult, Status));
-
-		results.clear();
-
-	}table.getSelectionModel().setCellSelectionEnabled(true);table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);table.setItems(resultData);
+		table.getSelectionModel().setCellSelectionEnabled(true);
+		table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		table.setItems(resultData);
 
 	}
 

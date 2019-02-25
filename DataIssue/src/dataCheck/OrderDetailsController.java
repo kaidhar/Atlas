@@ -6,6 +6,7 @@ import org.jdom2.JDOMException;
 import org.json.JSONException;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,21 +42,21 @@ public class OrderDetailsController {
 
 	@FXML
 	private ImageView OrderLogo;
-	
-    @FXML
-    private TableView<TableOrderDetails> OrderDetailTable;
 
-    @FXML
-    private TableColumn<TableOrderDetails, String> AttributeName;
+	@FXML
+	private TableView<TableOrderDetails> OrderDetailTable;
 
-    @FXML
-    private TableColumn<TableOrderDetails,String> AttributeValue;
+	@FXML
+	private TableColumn<TableOrderDetails, String> AttributeName;
+
+	@FXML
+	private TableColumn<TableOrderDetails, String> AttributeValue;
 
 	ObservableList<String> EnvironmentValues = FXCollections.observableArrayList("QA2", "QA3", "STG2", "STG3");
 	ObservableList<String> BannerValues = FXCollections.observableArrayList("LT", "BAY", "SAKS", "OFF5");
 	ObservableList<TableOrderDetails> resultData = FXCollections.observableArrayList();
-	
-	
+	static Multimap<String, String> Attributes = HashMultimap.create();
+
 	@FXML
 	public void initialize() {
 		EnvironmentValue.setItems(EnvironmentValues);
@@ -63,11 +64,9 @@ public class OrderDetailsController {
 
 		AttributeName.setCellValueFactory(new PropertyValueFactory<TableOrderDetails, String>("AttributeName"));
 		AttributeValue.setCellValueFactory(new PropertyValueFactory<TableOrderDetails, String>("AttributeValue"));
-		
 
-		
 		String Path = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "HBCLogo.png";
-		//System.out.println(Path);
+		// System.out.println(Path);
 		File file = new File(Path);
 		Image image = new Image(file.toURI().toString());
 		OrderLogo.setImage(image);
@@ -80,63 +79,81 @@ public class OrderDetailsController {
 		OrderID.clear();
 		BannerValue.getSelectionModel().clearSelection();
 		EnvironmentValue.getSelectionModel().clearSelection();
-		
+
 		ObservableList<TableOrderDetails> resultData = FXCollections.observableArrayList();
 		resultData.add(new TableOrderDetails("", ""));
 		OrderDetailTable.setItems(resultData);
+		resultData.clear();
+		Attributes.clear();
 
 	}
 
 	@FXML
 	void getOrderDetails(ActionEvent event) throws IOException, JSONException, JDOMException {
 
-		String OrderIDValue = OrderID.getText();
-		String Environment = EnvironmentValue.getSelectionModel().getSelectedItem();
-		String Banner = BannerValue.getSelectionModel().getSelectedItem();
-		InventoryWebServices IWS = new InventoryWebServices();
-		Multimap<String, String> Attributes = IWS.getOrderDetails(OrderIDValue, Environment, Banner);
-		
-		
-	
-		//TreeMultiMap<String, String> treeMap = new TreeMap<String, String>(Attributes);
-		
-		for (String name: Attributes.keySet()){
+		try {
+			Attributes.clear();
+			resultData.clear();
 
-            String key =name.toString();
-            String value = Attributes.get(name).toString();  
-            
-            if(value.isEmpty())
-            {
-            	continue;
-            	
-            }
-            setUpdata(key,value);
+			String OrderIDValue = OrderID.getText();
+			String Environment = EnvironmentValue.getSelectionModel().getSelectedItem();
+			String Banner = BannerValue.getSelectionModel().getSelectedItem();
+			InventoryWebServices IWS = new InventoryWebServices();
+			Attributes = IWS.getOrderDetails(OrderIDValue, Environment, Banner);
 
+			for (String name : Attributes.keySet()) {
 
-} 
-		
-		OrderDetailTable.getSelectionModel().setCellSelectionEnabled(true);
-		OrderDetailTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		OrderDetailTable.setItems(resultData);	
-	
+				String key = name.toString();
+				String value = Attributes.get(name).toString();
+
+				if (value.isEmpty()) {
+					continue;
+
+				}
+				setUpdata(key, value);
+
+			}
+
+			OrderDetailTable.getSelectionModel().setCellSelectionEnabled(true);
+			OrderDetailTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			OrderDetailTable.setItems(resultData);
+		} catch (Exception e) {
+
+			ObservableList<TableOrderDetails> resultData = FXCollections.observableArrayList();
+			resultData.add(new TableOrderDetails("", ""));
+			OrderDetailTable.setItems(resultData);
+			Attributes.clear();
+			resultData.clear();
+
+		}
 
 	}
-	
-	public void setUpdata(String AttributeName,String AttributeValue)
-	{
 
-	resultData.add(new TableOrderDetails(AttributeName,AttributeValue));
-	
-	
+	public void setUpdata(String AttributeName, String AttributeValue) {
+
+		resultData.add(new TableOrderDetails(AttributeName, AttributeValue));
+
 	}
-	
-	  @FXML
-	    void CopyMethod(MouseEvent event) {
-		  
-	    	String Value = OrderDetailTable.getSelectionModel().getSelectedItem().getAttributeValue();
 
-	    	TableUtils.CopyToClipBoard(Value);
+	@FXML
+	void CopyMethod(MouseEvent event) {
+		StringBuilder FinalString = new StringBuilder();
 
-	    }
+		String Value = OrderDetailTable.getSelectionModel().getSelectedItem().getAttributeValue();
+
+		char[] ValueArray = Value.toCharArray();
+
+		for (int i = 0; i <= ValueArray.length - 1; i++) {
+			if (ValueArray[i] == '[' || ValueArray[i] == ']'||ValueArray[i]==',') {
+				continue;
+			}
+			FinalString = FinalString.append(ValueArray[i]);
+		}
+
+		String Finalvalue = FinalString.toString();
+
+		TableUtils.CopyToClipBoard(Finalvalue);
+
+	}
 
 }
