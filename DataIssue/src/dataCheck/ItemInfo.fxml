@@ -45,11 +45,11 @@
                      <children>
                         <TableView fx:id="table" cache="true" editable="true" layoutY="-1.0" onMouseClicked="#CopyMethod" prefHeight="170.0" prefWidth="686.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
                           <columns>
-                            <TableColumn fx:id="itemidtable" prefWidth="146.0" text="Item_ID" />
+                            <TableColumn fx:id="itemidtable" prefWidth="146.0" text="ITEM ID" />
                               <TableColumn fx:id="modeltable" prefWidth="184.0" text="MODEL" />
                             <TableColumn fx:id="upctable" prefWidth="163.0" text="UPC" />
-                              <TableColumn fx:id="sizetable" minWidth="0.0" prefWidth="70.0" text="Size" />
-                              <TableColumn fx:id="colortable" prefWidth="120.0" text="Color" />
+                              <TableColumn fx:id="sizetable" minWidth="0.0" prefWidth="70.0" text="SIZE" />
+                              <TableColumn fx:id="colortable" prefWidth="120.0" text="COLOR" />
                           </columns>
                         </TableView>
                      </children>

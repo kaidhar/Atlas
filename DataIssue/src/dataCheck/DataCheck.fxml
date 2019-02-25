@@ -75,16 +75,16 @@
                            <children>
                               <TableView fx:id="table" layoutX="47.0" layoutY="-86.0" onMouseClicked="#CopyMethod" prefHeight="417.0" prefWidth="1055.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="DCSTORE" minWidth="-1.0" prefWidth="127.0" resizable="false" text="Node" />
-                                  <TableColumn fx:id="OMSInventoryValue" minWidth="-1.0" prefWidth="67.0" text="Quantity" />
+                                  <TableColumn fx:id="DCSTORE" minWidth="-1.0" prefWidth="127.0" resizable="false" text="NODE" />
+                                  <TableColumn fx:id="OMSInventoryValue" minWidth="-1.0" prefWidth="67.0" text="QUANTITY" />
                                     <TableColumn fx:id="BOPIS" maxWidth="3000.0" minWidth="-1.0" prefWidth="94.0" text="BOPIS" />
                                     <TableColumn fx:id="DCAvailable" maxWidth="3000.0" minWidth="-1.0" prefWidth="81.0" text="DIRTY" />
                                     <TableColumn fx:id="StoreAvailable" maxWidth="3000.0" minWidth="-1.0" prefWidth="39.0" text="STORE" />
                                     <TableColumn fx:id="VendorAvailable" maxWidth="3500.0" minWidth="-1.0" prefWidth="75.0" text="VENDOR" />
-                                    <TableColumn fx:id="AttributeModel" prefWidth="197.0" resizable="false" text="Model" />
-                                    <TableColumn fx:id="AttributeSize" prefWidth="70.0" resizable="false" text="Size" />
-                                    <TableColumn fx:id="AttributeColor" prefWidth="113.0" resizable="false" text="Color" />
-                                    <TableColumn fx:id="AttributeStatus" minWidth="3.0" prefWidth="84.0" resizable="false" text="Status" />
+                                    <TableColumn fx:id="AttributeModel" prefWidth="197.0" resizable="false" text="MODEL" />
+                                    <TableColumn fx:id="AttributeSize" prefWidth="70.0" resizable="false" text="SIZE" />
+                                    <TableColumn fx:id="AttributeColor" prefWidth="113.0" resizable="false" text="COLOR" />
+                                    <TableColumn fx:id="AttributeStatus" minWidth="3.0" prefWidth="84.0" resizable="false" text="STATUS" />
                                     <TableColumn fx:id="WEB" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="SELLABLE" />
                                     <TableColumn fx:id="OnHand" minWidth="-1.0" prefWidth="85.0" resizable="false" text="ONHAND" />
                                 </columns>
