@@ -15,14 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import org.testng.annotations.Test;
-
 public class DataValidator {
 
 	public static Connection con;
 	public static Connection conWeb;
 
-	@Test
+	
 	public void openConnection(String Environment) throws ClassNotFoundException, SQLException, IOException {
 
 		Class.forName("oracle.jdbc.OracleDriver");
@@ -371,7 +369,6 @@ public class DataValidator {
 
 	}
 
-	@Test
 	public String getLocation() {
 
 		URL pathSource = this.getClass().getResource("Keys.Properties");

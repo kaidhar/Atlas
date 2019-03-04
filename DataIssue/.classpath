@@ -5,38 +5,37 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.testng.TESTNG_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/mongo-java-driver-3.7.1.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jsch-0.1.5.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/jdom-2.0.6-contrib.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/jdom-2.0.6-javadoc.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/jdom-2.0.6-junit.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/jdom-2.0.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/jdom-2.0.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/lib/jaxen-1.1.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/lib/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/lib/xml-apis.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/lib/xalan/serializer-2.7.2.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/jdom-2.0.6/lib/xalan/xalan-2.7.2.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/commons-codec-1.10.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/fluent-hc-4.5.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/httpclient-4.5.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/httpclient-cache-4.5.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/httpclient-win-4.5.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/httpcore-4.4.10.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/httpmime-4.5.6.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/jna-4.4.0.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/httpcomponents-client-4.5.6/lib/jna-platform-4.4.0.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/jackson-annotations-2.1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/jackson-annotations-2.7.0.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/jackson-core-2.6.3.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/jackson-core-2.9.7.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/jackson-databind-2.6.3.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/java-json.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/mongo-java-driver-3.8.0.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/org-apache-commons-codec 2.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Desktop/Atlas/org-apache-commons-codec.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/guava.jar"/>
-	<classpathentry kind="lib" path="/Users/h895458/Downloads/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/mongo-java-driver-3.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jsch-0.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jdom-2.0.6-contrib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jdom-2.0.6-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jdom-2.0.6-junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jdom-2.0.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jdom-2.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jaxen-1.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/xml-apis.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/serializer-2.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/xalan-2.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/fluent-hc-4.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/httpclient-4.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/httpclient-cache-4.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/httpclient-win-4.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/httpcore-4.4.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/httpmime-4.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jna-4.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jna-platform-4.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jackson-annotations-2.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jackson-annotations-2.7.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jackson-core-2.6.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jackson-core-2.9.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/jackson-databind-2.6.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/org-apache-commons-codec 2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/org-apache-commons-codec.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/guava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/H895458/eclipse-workspace/JARS/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

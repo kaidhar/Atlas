@@ -1,7 +1,6 @@
 package dataCheck;
 
 import org.bson.Document;
-import org.testng.annotations.Test;
 
 import com.jcraft.jsch.JSchException;
 import com.mongodb.MongoClient;
@@ -16,7 +15,6 @@ import java.util.Properties;
 
 public class MongoWebDB {
 
-	@Test
 	public void updateMongo(String UPC, String Quantity, String Banner,String Environment) throws JSchException, IOException {
 
 		String User = null;
